@@ -1,0 +1,15 @@
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-disallow-privilege-escalation
+  namespace: kyverno-test
+spec:
+  containers:
+  - name: container01
+    image: busybox
+    command:
+    - "sleep"
+    - "3600"
+    securityContext:
+      allowPrivilegeEscalation: false

@@ -1,0 +1,34 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-creation-for-deploy
+spec:
+  background: false
+  rules:
+  - match:
+      resources:
+        kinds:
+          - Pod
+        namespaces:
+          - kyverno-test
+       # selector:
+#          matchLabels:
+ #           app: httpd
+    name: create-policy
+    preconditions:
+      all:
+      - key: '{{ time_now_utc().time_to_cron(@).split(@,'' '') | [1].to_number(@)
+          }}'
+        operator: AnyIn
+        value: 14-16
+    validate:
+      deny:
+        conditions:
+        - key: '{{request.operation}}'
+          operator: In
+          value:
+          - CREATE
+          - DELETE
+          - UPDATE
+      message: Creating and deleting deployment is not allowed at this time, please contact admin!
+  validationFailureAction: enforce

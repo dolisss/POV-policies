@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: httpd
+  name: httpd
+  namespace: kyverno-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpd
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      containers:
+      - image: httpd
+        name: httpd
+        env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: prod-db-secret 
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: prod-db-secret 
+              key: password
+

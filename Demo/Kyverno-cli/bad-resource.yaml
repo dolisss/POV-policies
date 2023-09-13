@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+  namespace: kyverno-test
+spec:
+  containers:
+  - name: container01
+    image: httpd
+    volumeMounts:
+      - name: udev
+        mountPath: /data
+      - name: temp
+        mountPath: /scratch
+  volumes:
+  - name: temp
+    emptyDir: {}
+  - name: udev
+    hostPath:
+      path: /etc/udev

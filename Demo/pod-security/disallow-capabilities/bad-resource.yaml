@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01-disallow-capabilities 
+  namespace: kyverno-test
+spec:
+  containers:
+  - name: container01
+    image: busybox
+    command:
+    - "sleep"
+    - "3600"
+    securityContext:
+      capabilities:
+        add:
+        - SYS_ADMIN

@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-disallow-host-namespaces
+  namespace: kyverno-test
+spec:
+  hostPID: false
+  hostIPC: false
+  hostNetwork: false
+  containers:
+  - name: container01
+    image: busybox
+    command:
+    - "sleep"
+    - "3600"
