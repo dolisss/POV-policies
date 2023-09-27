@@ -28,7 +28,6 @@ spec:
           operator: In
           value:
           - CREATE
-          - DELETE
           - UPDATE
-      message: Creating and deleting deployment is not allowed at this time, please contact admin!
+      message: Creating and updating deployment is not allowed at this time, please contact admin!
   validationFailureAction: audit
