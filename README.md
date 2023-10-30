@@ -39,12 +39,12 @@ kubectl apply -f restricted
 Install baseline policies
 
 ```sh
-kubectl apply -k baseline/
+kubectl apply -f baseline/
 ```
 
 Install restricted profile in enforce mode
 ```sh
-kubectl apply -k Enforce/restricted
+kubectl apply -f Enforce/restricted
 ```
 Once policies are installed, you can check if they are ready using the command:
 
