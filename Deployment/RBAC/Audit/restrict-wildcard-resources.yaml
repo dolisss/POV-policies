@@ -27,6 +27,8 @@ spec:
             kinds:
               - Role
               - ClusterRole
+            namespaces:
+              - kyverno-test
       validate:
         message: "Use of a wildcard ('*') in any resources is forbidden."
         deny:
