@@ -1,0 +1,3 @@
+kubectl apply -f cluster-role.yaml
+create a clusterrolebinding: kubectl create clusterrolebinding kyvernocleanup-rs --clusterrole=kyverno:cleanup-rs  --serviceaccount=kyverno:kyverno-cleanup-controller
+Apply the cleanup policy
