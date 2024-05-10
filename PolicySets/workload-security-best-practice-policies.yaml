@@ -1,0 +1,20 @@
+apiVersion: security.nirmata.io/v1alpha1
+kind: PolicySet
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kyverno-operator
+    meta.helm.sh/release-namespace: nirmata-system
+  labels:
+    app.kubernetes.io/instance: workload-security-best-practice-policies
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: policyset
+    app.kubernetes.io/part-of: nirmata-kyverno-operator
+  name: workload-security-best-practice-policies
+  namespace: nirmata-system
+spec:
+  source:
+    helm:
+      chartName: workload-security-best-practice-policies
+      chartRepo: https://nirmata.github.io/kyverno-policies
+      passwordSecret: nirmata-system/operator-params/chartRepoPassword
+      version: 0.2.1
