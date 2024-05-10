@@ -1,0 +1,20 @@
+apiVersion: security.nirmata.io/v1alpha1
+kind: PolicySet
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kyverno-operator
+    meta.helm.sh/release-namespace: nirmata-system
+  labels:
+    app.kubernetes.io/instance: rbac-best-practices
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: policyset
+    app.kubernetes.io/part-of: nirmata-kyverno-operator
+  name: rbac-best-practices
+  namespace: nirmata-system
+spec:
+  source:
+    helm:
+      chartName: rbac-best-practice-policies
+      chartRepo: https://nirmata.github.io/kyverno-policies
+      passwordSecret: nirmata-system/operator-params/chartRepoPassword
+      version: 0.1.2

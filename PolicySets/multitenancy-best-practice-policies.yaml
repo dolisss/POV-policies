@@ -1,0 +1,20 @@
+apiVersion: security.nirmata.io/v1alpha1
+kind: PolicySet
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kyverno-operator
+    meta.helm.sh/release-namespace: nirmata-system
+  labels:
+    app.kubernetes.io/instance: multitenancy-best-practice-policies
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: policyset
+    app.kubernetes.io/part-of: nirmata-kyverno-operator
+  name: multitenancy-best-practice-policies
+  namespace: nirmata-system
+spec:
+  source:
+    helm:
+      chartName: multitenancy-best-practice-policies
+      chartRepo: https://nirmata.github.io/kyverno-policies
+      passwordSecret: nirmata-system/operator-params/chartRepoPassword
+      version: 0.2.1
