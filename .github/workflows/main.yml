@@ -1,45 +1,37 @@
-name: NCTL Pipeline
+name: NCTL Scan Pipeline Demo
+run-name: ${{ github.actor }} has triggered Scan Action 🚀
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
 
-on: [push, pull_request]
+env:
+  NIRMATA_TOKEN: ${{secrets.NIRMATA_TOKEN}}
+  NIRMATA_URL: ${{secrets.NIRMATA_URL}}
+
 
 jobs:
-  install-nctl:
+  NCTL-Scan-Repository:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 
-      - name: Download and install NCTL 4.1.0
-        run: |
-          echo "Downloading and Installing NCTL 4.1.0"
-          wget https://nirmata-downloads.s3.us-east-2.amazonaws.com/nctl/nctl_4.1.0/nctl_4.1.0_linux_amd64.zip
-          unzip -o nctl_4.1.0_linux_amd64.zip
-          echo "Verify Installation"
-          chmod 755 ./nctl
-          ./nctl version
+      - name: Check out main repository code
+        uses: actions/checkout@v4
 
-      - name: Save NCTL for later jobs
-        uses: actions/upload-artifact@v3
-        with:
-          name: nctl
-          path: ./nctl
+      - name: nctl-scan-installer
+        uses: nirmata/action-install-nctl-scan@v0.0.6
 
-  nctl-scan-repo:
-    runs-on: ubuntu-latest
-    needs: install-nctl
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: test-install
+        run: nctl scan repository --help
 
-      - name: Download NCTL artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: nctl
-          path: ./nctl
-
-      - name: Running nctl scan repository
-        run: |
-          echo "Running nctl scan"
-          ls -la
-          git checkout main
-          ./nctl scan repository --token H5buYdUUEbafmLVT36/vO6Cdl0fmbI/wur8yUbdCmE7okbhNLdglDDmRG4NXpi16xHs0d2/tA0awTdTMt8quBQ== --policies ${{ github.workspace }}/POV/Pod-Security-Standards/Audit --url https://www.nirmata.io
+      - name: nctl login
+        run: nctl login --url $NIRMATA_URL --token $NIRMATA_TOKEN --userid anusha.hegde@nirmata.com
+        
+      - name: NCTL Scan Repository
+        run: nctl scan repository --policy-sets pss-baseline,pss-restricted,rbac-best-practices,dockerfile-best-practices,ecs-tf-config-best-practices,s3-tf-config-best-practices --publish-token $NIRMATA_TOKEN
+  
+      - run: echo "🍏 This job's status is ${{ job.status }}."
