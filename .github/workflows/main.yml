@@ -29,7 +29,7 @@ jobs:
         run: nctl scan repository --help
 
       - name: nctl login
-        run: nctl login --url $NIRMATA_URL --token $NIRMATA_TOKEN --userid anusha.hegde@nirmata.com
+        run: nctl login --url $NIRMATA_URL --token $NIRMATA_TOKEN --userid anudeep.nalla@nirmata.com
         
       - name: NCTL Scan Repository
         run: nctl scan repository --policy-sets pss-baseline,pss-restricted,rbac-best-practices,dockerfile-best-practices,ecs-tf-config-best-practices,s3-tf-config-best-practices --publish-token $NIRMATA_TOKEN
