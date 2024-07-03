@@ -12,7 +12,6 @@ env:
   NIRMATA_TOKEN: ${{secrets.NIRMATA_TOKEN}}
   NIRMATA_URL: ${{secrets.NIRMATA_URL}}
 
-
 jobs:
   NCTL-Scan-Repository:
     runs-on: ubuntu-latest
