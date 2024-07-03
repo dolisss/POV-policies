@@ -1,0 +1,64 @@
+name: NCTL Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  install-nctl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download and install NCTL 4.1.0
+        run: |
+          echo "Downloading and Installing NCTL 4.1.0"
+          wget https://nirmata-downloads.s3.us-east-2.amazonaws.com/nctl/nctl_4.1.0/nctl_4.1.0_linux_amd64.zip
+          unzip -o nctl_4.1.0_linux_amd64.zip
+          echo "Verify Installation"
+          chmod 755 ./nctl
+          ./nctl version
+
+      - name: Save NCTL for later jobs
+        uses: actions/upload-artifact@v3
+        with:
+          name: nctl
+          path: ./nctl
+
+  nctl-scan-k8s:
+    runs-on: ubuntu-latest
+    needs: install-nctl
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download NCTL artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: nctl
+          path: ./nctl
+
+      - name: Running nctl scan
+        run: |
+          echo "Running nctl scan"
+          ls -la
+          ./nctl scan kubernetes --policies ${{ github.workspace }}/POV/Pod-Security-Standards/Audit/baseline --resources ${{ github.workspace }}/Deployment/pod-security/disallow-capabilities/bad-resource.yaml --details --audit-as-warn
+
+  nctl-scan-repo:
+    runs-on: ubuntu-latest
+    needs: install-nctl
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download NCTL artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: nctl
+          path: ./nctl
+
+      - name: Running nctl scan repository
+        run: |
+          echo "Running nctl scan"
+          ls -la
+          git checkout main
+          ./nctl scan repository --token ${{ secrets.NPM_TOKEN }} --policies ${{ github.workspace }}/POV/Pod-Security-Standards/Audit --url https://www.nirmata.io
