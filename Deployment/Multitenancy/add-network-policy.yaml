@@ -16,6 +16,7 @@ metadata:
       to application Pods from select sources. This policy will create a new NetworkPolicy resource
       named `default-deny` which will deny all traffic anytime a new Namespace is created.      
 spec:
+  generateExisting: true
   background: true
   rules:
   - name: default-deny
@@ -24,6 +25,14 @@ spec:
       - resources:
           kinds:
           - Namespace
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - kube-system
+          - nirmata
+          - nirmata-system
+          - kyverno
     generate:
       apiVersion: networking.k8s.io/v1
       kind: NetworkPolicy
