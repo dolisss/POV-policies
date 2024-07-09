@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: replace-node-selector
+spec:
+  rules:
+  - name: replace-node-selector
+    match:
+      resources:
+        kinds:
+        - Pod
+        namespaces:
+        - kyverno-test
+    mutate:
+      patchStrategicMerge:
+        spec:
+          nodeSelector:
+            node.kubernetes.io/worker-abc: ""
+            node-role.kubernetes.io/worker-abc: null
