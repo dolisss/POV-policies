@@ -1,4 +1,4 @@
-# Contains the policies for demo and the polices are applied to kyverno-test namespace
+# Contains the policies for demo and the polices are applied to the kyverno-test namespace
 
 This repository contains a set of Kyverno policies for POV and Demo.
 
